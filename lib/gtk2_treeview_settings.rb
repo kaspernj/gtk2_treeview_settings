@@ -58,9 +58,40 @@ class Gtk2_treeview_settings
   end
   
   def append(data)
-    iter = tv.model.append
+    if @tv.model.is_a?(Gtk::TreeStore)
+      iter = @tv.model.append(nil)
+    else
+      iter = @tv.model.append
+    end
     
     data.each do |key, val|
+      col_no = self.col_no_for_id(key)
+      col_no_orig = self.col_orig_no_for_id(key)
+      col = tv.columns[col_no]
+      renderer = col.cell_renderers.first
+      
+      if renderer.is_a?(Gtk::CellRendererText)
+        iter[col_no_orig] = val.to_s
+      elsif renderer.is_a?(Gtk::CellRendererToggle)
+        iter[col_no_orig] = Knj::Strings.yn_str(val, 1, 0)
+      elsif renderer.is_a?(Gtk::CellRendererCombo)
+        iter[col_no_orig] = val.to_s
+      else
+        raise "Unknown renderer: '#{renderer.class.name}'."
+      end
+    end
+    
+    return {:iter => iter}
+  end
+  
+  def append_adv(args)
+    if @tv.model.is_a?(Gtk::TreeStore)
+      iter = @tv.model.append(args[:parent])
+    else
+      iter = @tv.model.append
+    end
+    
+    args[:data].each do |key, val|
       col_no = self.col_no_for_id(key)
       col_no_orig = self.col_orig_no_for_id(key)
       col = tv.columns[col_no]
