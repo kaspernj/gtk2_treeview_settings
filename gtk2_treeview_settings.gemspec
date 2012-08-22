@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{gtk2_treeview_settings}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kasper Johansen"]
-  s.date = %q{2012-08-08}
+  s.date = %q{2012-08-22}
   s.description = %q{A gem that helps with ordering of columns and more.}
   s.email = %q{k@spernj.org}
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "gtk2_treeview_settings.gemspec",
     "lib/gtk2_treeview_settings.rb",
     "spec/gtk2_treeview_settings_spec.rb",
     "spec/spec_helper.rb"
