@@ -1,9 +1,17 @@
+#This class handels appending and reading data from a treeview with dynamic columns. It tracks the columns based on given symbol-IDs.
+#===Examples
+#  @tv_settings = Gtk2_treeview_settings.new(
+#    :tv => @gui["tvTimelogs"],
+#    :col_ids => {
+#      0 => :id,
+#      1 => :name
+#    }
+#  )
 class Gtk2_treeview_settings
   attr_reader :tv
   
   def initialize(args)
     @args = args
-    
     @tv = @args[:tv]
     
     #Set the initial order of the columns so we can recognize them later.
@@ -57,6 +65,9 @@ class Gtk2_treeview_settings
     raise "Could not find column number by that ID: '#{id}'."
   end
   
+  #Appends the given data to the treeview. Only works with Gtk::ListStore.
+  #===Examples
+  #  gset.append(:id => 0, :name => "Kasper") #=> {:iter => Gtk::TreeIter-object}
   def append(data)
     if @tv.model.is_a?(Gtk::TreeStore)
       iter = @tv.model.append(nil)
@@ -84,6 +95,9 @@ class Gtk2_treeview_settings
     return {:iter => iter}
   end
   
+  #Appens the given data the the treeview in hash-form which gives the posibility for a parent element when using TreeStore.
+  #===Examples
+  #  gset.append_adv(:parent => parent_iter, :data => {:id => 0, :name => "Kasper"}) #=> {:iter => Gtk::TreeIter-object}
   def append_adv(args)
     if @tv.model.is_a?(Gtk::TreeStore)
       iter = @tv.model.append(args[:parent])
