@@ -13,6 +13,7 @@ class Gtk2_treeview_settings
   def initialize(args)
     @args = args
     @tv = @args[:tv]
+    @renderers = {}
     
     #Set the initial order of the columns so we can recognize them later.
     @col_ids = {}
@@ -29,6 +30,14 @@ class Gtk2_treeview_settings
         @saved_ids[val] = @tv.columns[key].__id__
       end
     end
+  end
+  
+  def cellrenderer_for_id(id)
+    col_no = self.col_no_for_id(id)
+    col = tv.columns[col_no]
+    renderer = col.cell_renderers.first
+    raise Errno::ENOENT, "Could not find cell-renderer for that ID: '#{id}', '#{col_no}'." if !renderer
+    return renderer
   end
   
   #Returns a column-number for a specific ID (given at initialize-time).
